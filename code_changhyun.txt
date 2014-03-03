@@ -1,0 +1,37 @@
+getwd()
+setwd("D:/Dropbox/UC Berkeley/spring/STAT222")
+daily <- read.table("daily.csv", sep=',', head=TRUE)
+monthly <- read.table("monthly.csv", sep=',', head=TRUE)
+date1 <- monthly$Date[30:300]
+price1 <- monthly$Adj.Close[30:300]
+plot(date1, price1, xlim=c(date1[length(date1)],date1[1]))
+which(price1==max(price1))
+end <- date1[48]
+date2 <- monthly$Date[100:200]
+price2 <- monthly$Adj.Close[100:200]
+plot(date2, price2, xlim=c(date2[length(date2)],date2[1]))
+which(price2==min(price2))
+begin <- date2[39]
+
+which(monthly$Date==begin)
+which(monthly$Date==end)
+library(MASS)
+
+### hypothesis testing of diff Arima coeffs in monthly index
+pre <- arima(monthly$Adj.Close[which(monthly$Date==begin):which(monthly$Date==end)])
+vpre <- vcov(pre)
+post <-arima(monthly$Adj.Close[which(monthly$Date==end):which(monthly$Date==monthly$Date[1])])
+vpost <- vcov(post)
+df1 <- length(which(monthly$Date==begin):which(monthly$Date==end))-1
+df2 <- length(which(monthly$Date==end):which(monthly$Date==monthly$Date[1]))-1
+pt((coef(post)-coef(pre))/sqrt(vpost+vpre),df1+df2, lower.tail=FALSE)
+
+
+### hypothesis testing of diff Arima coeffs in daily index
+pre2 <- arima(daily$Adj.Close[which(daily$Date=="2002-09-03"):which(daily$Date=="2007-10-01")])
+vpre2 <- vcov(pre)
+post2 <-arima(daily$Adj.Close[which(daily$Date=="2007-10-01"):which(daily$Date==daily$Date[1])])
+vpost2 <- vcov(post)
+df12 <- length(which(daily$Date=="2002-09-03"):which(daily$Date=="2007-10-01"))-1
+df22 <- length(which(daily$Date=="2007-10-01"):which(daily$Date==daily$Date[1]))-1
+pt((coef(post2)-coef(pre2))/sqrt(vpost2+vpre2),df12+df22, lower.tail=FALSE)
