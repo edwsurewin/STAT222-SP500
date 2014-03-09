@@ -18,10 +18,11 @@ import numpy
 for x in range(16143):
 	if x-60 < 0:
 		sprice[x] = numpy.mean(price[0:x+60])
-	if x+60 > 16142:
-		sprice[x] = numpy.mean(price[x-60:16142])
-	else:
-		sprice[x] = numpy.mean(price[x-60:x+60])
+	else: 
+		if x+60 > 16142:
+			sprice[x] = numpy.mean(price[x-60:16142])
+		else:
+			sprice[x] = numpy.mean(price[x-60:x+60])
 
 from pylab import *
 plot(range(len(date)),sprice)
