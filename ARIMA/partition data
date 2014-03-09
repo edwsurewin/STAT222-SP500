@@ -1,0 +1,81 @@
+import os
+print os.getcwd()
+os.chdir("D:/Dropbox/UC Berkeley/spring/STAT222/Project")
+
+from pandas import read_csv
+df = read_csv("daily.csv", )
+Date= tuple(df['Date'])
+Price= tuple(df['Adj Close'])
+
+price = range(16143)
+date = range(16143)
+for x in range(16143):
+	price[x] = Price[16142-x]
+	date[x] = Date[16142-x]
+
+sprice = range(16143)
+import numpy
+for x in range(16143):
+	if x-60 < 0:
+		sprice[x] = numpy.mean(price[0:x+60])
+	if x+60 > 16142:
+		sprice[x] = numpy.mean(price[x-60:16142])
+	else:
+		sprice[x] = numpy.mean(price[x-60:x+60])
+
+from pylab import *
+plot(range(len(date)),sprice)
+show()
+
+maxprice = range(0)
+maxdate = range(0)
+maxobs = range(0)
+for i in range(16143):
+	max = 0
+	if i-180 < 0:
+		a = sprice[0:i-1] + sprice[i+1:i+180]
+	else:
+		if i+180 > 16142:
+			a = sprice[i-180:i-1] + sprice[i+1:16142]
+		else:
+			a = sprice[i-180:i-1] + sprice[i+1:i+180]
+	for number in a:
+		if number > max:
+			max = number
+	if sprice[i] > max:
+		maxprice = maxprice + [sprice[i]]
+		maxdate = maxdate + [date[i]]
+		maxobs = maxobs + [i]
+		
+minprice = range(0)
+mindate = range(0)
+minobs = range(0)
+for i in range(16143):
+	min = 2000
+	if i-180 < 0:
+		a = sprice[0:i-1] + sprice[i+1:i+180]
+	else:
+		if i+180 > 16142:
+			a = sprice[i-180:i-1] + sprice[i+1:16142]
+		else:
+			a = sprice[i-180:i-1] + sprice[i+1:i+180]
+	for number in a:
+		if number < min:
+			min = number
+	if sprice[i] < min:
+		minprice = minprice + [sprice[i]]
+		mindate = mindate + [date[i]]
+		minobs = minobs + [i]
+		
+
+
+from pylab import *
+x = range(16143)
+plot(x,sprice)
+plot(maxobs, maxprice, "o", label="max")
+plot(minobs, minprice, "o", label="min")
+legend()
+show()
+
+preev = price[12697:14493]
+postev = price[14493:15431]
