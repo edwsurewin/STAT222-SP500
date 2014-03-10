@@ -45,4 +45,8 @@ ___
 install.packages(rugarch)
 require(rugarch)
 
+_----
+  
+ts.sim <- arima.sim(list(order = c(2,1,0), ar = 1), n = 200)
+ts.plot(ts.sim)
 
