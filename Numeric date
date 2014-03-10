@@ -1,0 +1,9 @@
+from decimal import *
+getcontext().prec= 6
+enddate = 2014 + Decimal(59)/Decimal(365)
+begindate = 1950 + Decimal(3)/Decimal(365)
+gap = (enddate - begindate)/(len(date)-1)
+numdate = range(len(date))
+numdate[0] = begindate
+for i in range(len(date)-1):
+	numdate[i+1] = begindate + i * gap
