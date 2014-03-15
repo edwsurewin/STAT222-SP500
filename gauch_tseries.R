@@ -48,6 +48,6 @@ require(rugarch)
 
 _----
   
-ts.sim <- arima.sim(list(order = c(2,1,0), ar = 1), n = 200)
+ts.sim <- arima.sim(list(order = c(1,1,1), ar = 0.7, ma = 0.8), n = 200)
 ts.plot(ts.sim)
 
