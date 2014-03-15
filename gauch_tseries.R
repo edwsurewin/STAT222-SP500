@@ -27,8 +27,9 @@ plot(dax.garch)          # conditional normality seems to be violated
 
 ----
   
-
-data = read.csv("http://ichart.finance.yahoo.com/table.csv?s=%5EGSPC&d=2&e=6&f=2014&g=d&a=0&b=3&c=1950&ignore=.csv")
+#install.packages("tseries")
+library("tseries")
+data = read.csv("/Users/edwsurewin/Dropbox/Berkeley MA/222/STAT222-SP500/SP500.csv")
 dat <- diff(log(data[,"Open"]))
 dat <- ts(dat[1:501])
 dat.garch <- garch(dat)
